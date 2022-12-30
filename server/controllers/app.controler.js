@@ -48,12 +48,12 @@ const updateGroup = (req, res) => {
 
 // User APIs
 const createUser = (req, res) => {
-  const { username, email, password, confirmPassword } = req.body;
+  const { username, email, password } = req.body;
   User.create({
     username,
     email,
     password,
-    confirmPassword,
+    // No need to save confirm password in db, but its validated in frontend!
   })
     .then((user) => res.json(user))
     .catch((err) => res.status(400).json(err));

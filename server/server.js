@@ -1,8 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const cookieparser = require("cookie-parser");
 require("./config/mongoose.config");
-app.use(cors());
+require("dotenv").config();
+app.use(cookieparser());
+// replace app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require("./routes/app.routs")(app);
