@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 const groupSchema = new mongoose.Schema(
   {
     group: {
@@ -7,19 +7,19 @@ const groupSchema = new mongoose.Schema(
       users: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'user',
+          ref: "user",
         },
       ],
       posts: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'post',
+          ref: "post",
         },
       ],
     },
   },
 
   { timestamps: true }
-)
-const Group = mongoose.model('group', groupSchema)
-module.exports = Group
+);
+const Group = mongoose.model("group", groupSchema);
+module.exports = Group;
