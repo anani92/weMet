@@ -8,4 +8,5 @@ module.exports = (app) => {
   // app.delete('/api/groups/:id/delete', appController.deleteProduct)
   // app.put('/api/groups/:id/edit', appController.updateProduct)
   // User APIs
+  app.post("/api/createUser", appController.createUser);
 };
