@@ -1,5 +1,7 @@
 const Group = require("../model/group.models");
 const User = require("../model/user.models");
+const jwt = require("jsonwebtoken");
+
 // Groups APIs
 const findAllgroups = (req, res) => {
   Group.find()
@@ -46,19 +48,35 @@ const updateGroup = (req, res) => {
     .catch((err) => res.json({ message: "Something went wrong", error: err }));
 };
 
-// User APIs
-const createUser = (req, res) => {
-  const { username, email, password } = req.body;
-  User.create({
-    username,
-    email,
-    password,
-    // No need to save confirm password in db, but its validated in frontend!
-  })
-    .then((user) => res.json(user))
-    .catch((err) => res.status(400).json(err));
+// FIXME:User APIs
+// token to be sent to frontend carrying user credentials (payload,header,secret) all encoded
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
 };
 
+// create User
+const createUser = async (req, res) => {
+  const { username, email, password } = req.body;
+  try {
+    const user = await User.signup(username, email, password);
+    const token = createToken(user._id);
+    res.status(200).json({ msg: "User added successfully", email, token });
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
+// login User
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.login(email, password);
+    const token = createToken(user._id);
+    res.status(200).json({ msg:"User logged in successfully",email, token });
+  } catch (error) {
+    res.status(400).json({ msg: "Invalid credentials", error: error.message });
+  }
+};
 module.exports = {
   // Group APIs
   findAllgroups,
@@ -69,4 +87,5 @@ module.exports = {
   newGroup,
   // User APIs
   createUser,
+  loginUser,
 };
