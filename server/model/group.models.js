@@ -13,7 +13,7 @@ const groupSchema = new mongoose.Schema(
       posts: [
         {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "post",
+          ref: "Posts",
         },
       ],
     },

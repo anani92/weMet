@@ -13,7 +13,8 @@ const userSchema = new mongoose.Schema(
     // ],
   },
 
-  { timestamps: true }
+    { timestamps: true }
+    
 );
 // hashing password before saving to db
 userSchema.pre("save", function (next) {
