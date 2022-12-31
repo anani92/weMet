@@ -24,7 +24,7 @@ const Register = () => {
     const onSubmit = (formUser, e) => {
         e.preventDefault();
         axios.post(`http://localhost:8000/api/signup`, formUser)
-            .then((res) => setUserToken(res.data.user))
+            .then((res) => setUserToken(res.data))
             // .then(() => localStorage.setItem('user', JSON.stringify(json)))
             .then(() => navigate(`/register`))
             .catch(err => {

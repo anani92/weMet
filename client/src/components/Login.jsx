@@ -7,9 +7,10 @@ const Login = () => {
     const [backendErrors, setBackendErrors] = useState([])
     const [userToken, setUserToken] = useState({})
     const navigate = useNavigate()
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
         axios.post(`http://localhost:8000/api/login`)
-            .then((res) => { setUserToken(res.data.token) })
+            .then((res) => { setUserToken(res.data.user) })
             .then(() => navigate(-1))
             .catch(err => {
                 const errorResponse = err.response.data.errors; // Get the errors from err.response.data

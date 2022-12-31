@@ -60,13 +60,13 @@ const createUser = async (req, res) => {
   try {
     const user = await User.signup(username, email, password);
     const token = createToken(user._id);
-    // res.status(200).json({ msg: "User added successfully", email, token });
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json({ msg: "user is added successfully", email, user });
+    res.status(200).json({ msg: "User added successfully", email, token });
+    // res
+    //   .cookie("access_token", token, {
+    //     httpOnly: true,
+    //   })
+    //   .status(200)
+    //   .json({ msg: "user is added successfully", email, user, token });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -78,13 +78,13 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-      })
-      .status(200)
-      .json({ msg: "user is logged successfully", email, user });
-    // res.status(200).json({ msg: "User logged in successfully", email, token });
+    // res
+    //   .cookie("access_token", token, {
+    //     httpOnly: true,
+    //   })
+    //   .status(200)
+    //   .json({ msg: "user is logged successfully", user });
+    res.status(200).json({ msg: "User logged in successfully", email, token });
   } catch (error) {
     res.status(400).json({ msg: "Invalid credentials", error: error.message });
   }

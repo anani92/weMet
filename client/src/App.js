@@ -1,9 +1,9 @@
 import { Box } from "@mui/system";
-import { Routes, Route, BrowserRouter, useRouteMatch } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import {
   Login,
   Register,
-  Sidebar,
+  // Sidebar,
   Navbar,
   Groups,
   Post,
@@ -17,7 +17,7 @@ function App() {
     <BrowserRouter>
       <Box>
         <Navbar />
-        <Sidebar />
+        {/* <Sidebar /> */}
         <Routes>
           <Route path={`/`} element={<Dashboard />} />
           <Route path={`/groups`} element={<Groups />} />
