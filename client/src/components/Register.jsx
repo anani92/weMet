@@ -4,11 +4,11 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../hooks/useAuthContext'
 const Register = () => {
     const [backendErrors, setBackendErrors] = useState([])
-    // User coming from db saved in state
-    const [userToken, setUserToken] = useState({})
-    // front end validation schema with yup - not realted to backend schemas 
+    const { dispatch } = useAuthContext()
+
     const schema = yup.object().shape({
         username: yup.string().required("Username can't be blank!").min(6, "Username must be at lease 6 characters!"),
         email: yup.string().email("Email must be valid").required("Email can't be blank"),
@@ -24,8 +24,12 @@ const Register = () => {
     const onSubmit = (formUser, e) => {
         e.preventDefault();
         axios.post(`http://localhost:8000/api/signup`, formUser)
-            .then((res) => setUserToken(res.data))
-            // .then(() => localStorage.setItem('user', JSON.stringify(json)))
+            .then((res) => {
+                // save this user in local storage // replacing cookies 
+                localStorage.setItem('user', JSON.stringify(res.data));
+                // change the global state for this user once login/register is done
+                dispatch({ type: 'LOGIN', payload: res.data })
+            })
             .then(() => navigate(`/register`))
             .catch(err => {
                 const errorResponse = err.response.data.errors; // Get the errors from err.response.data
@@ -36,7 +40,6 @@ const Register = () => {
                 setBackendErrors(errorArr);
             })
     }
-    console.log(userToken)
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>

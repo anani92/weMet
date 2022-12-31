@@ -24,7 +24,7 @@ export const AuthContextProvider = ({ children }) => {
     user: null,
   });
   //everytime state changes (login or logout) then will see this state printed to console
-  console.log(`AuthContext state:${state}`);
+  console.log("AuthContext state (Global State):", state);
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}
