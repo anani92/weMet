@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 // Groups APIs
 const findAllgroups = (req, res) => {
   Group.find()
-    .then((allgroupss) => res.json({ groupss: allgroupss }))
+    .then((allgroups) => res.json(allgroups))
     .catch((err) =>
       res.json({ message: "something have gone wrong", error: err })
     );
@@ -60,7 +60,13 @@ const createUser = async (req, res) => {
   try {
     const user = await User.signup(username, email, password);
     const token = createToken(user._id);
-    res.status(200).json({ msg: "User added successfully", email, token });
+    // res.status(200).json({ msg: "User added successfully", email, token });
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({ msg: "user is added successfully", email, user });
   } catch (error) {
     res.status(400).json(error);
   }
@@ -72,13 +78,33 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.login(email, password);
     const token = createToken(user._id);
-    res.status(200).json({ msg:"User logged in successfully",email, token });
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+      })
+      .status(200)
+      .json({ msg: "user is logged successfully", email, user });
+    // res.status(200).json({ msg: "User logged in successfully", email, token });
   } catch (error) {
     res.status(400).json({ msg: "Invalid credentials", error: error.message });
   }
 };
+
+const allUsers = (req, res) => {
+  User.find({})
+    .then((allUsers) => res.json(allUsers))
+    .catch((err) =>
+      res.json({ message: "something have gone wrong", error: err })
+    );
+};
+
+// const logoutUser = (req, res) => {
+//   req.clearCookie("access_token");
+//   res.status(200).json("Logout sucessfull");
+// };
+
 module.exports = {
-  // Group APIs
+  // Other APIs
   findAllgroups,
   findGroupByCategory,
   findGroup,
@@ -88,4 +114,6 @@ module.exports = {
   // User APIs
   createUser,
   loginUser,
+  allUsers,
+  // logoutUser,
 };

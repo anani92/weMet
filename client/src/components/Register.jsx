@@ -21,10 +21,12 @@ const Register = () => {
         resolver: yupResolver(schema),
     })
     // when actual submitting happens
-    const onSubmit = (formUser) => {
+    const onSubmit = (formUser, e) => {
+        e.preventDefault();
         axios.post(`http://localhost:8000/api/signup`, formUser)
-            .then((res) => setUserToken(res.data.token))
-            .then(() => navigate(-1))
+            .then((res) => setUserToken(res.data.user))
+            // .then(() => localStorage.setItem('user', JSON.stringify(json)))
+            .then(() => navigate(`/register`))
             .catch(err => {
                 const errorResponse = err.response.data.errors; // Get the errors from err.response.data
                 const errorArr = []; // Define a temp error array to push the messages in
@@ -34,6 +36,7 @@ const Register = () => {
                 setBackendErrors(errorArr);
             })
     }
+    console.log(userToken)
     return (
         <div>
             <form onSubmit={handleSubmit(onSubmit)}>

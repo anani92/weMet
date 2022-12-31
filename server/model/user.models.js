@@ -48,6 +48,7 @@ userSchema.statics.login = async function (email, password) {
   if (!match) {
     throw Error("Invalid password");
   }
+  
   return user; 
 };
 

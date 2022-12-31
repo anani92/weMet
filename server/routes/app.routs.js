@@ -1,4 +1,6 @@
 const appController = require("../controllers/app.controler");
+const { checkAuth } = require("../config/checkAuth.js");
+
 module.exports = (app) => {
   // TODO: Groups APIs
   app.get("/api/groups", appController.findAllgroups);
@@ -10,4 +12,6 @@ module.exports = (app) => {
   // TODO: User APIs
   app.post("/api/signup", appController.createUser);
   app.post("/api/login", appController.loginUser);
+  app.get("/api/allUsers", appController.allUsers);
+  // app.get("/api/logout", appController.logoutUser);
 };
