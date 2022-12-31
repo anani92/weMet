@@ -87,6 +87,7 @@ const loginUser = async (req, res) => {
     res.status(200).json({ msg: "User logged in successfully", email, token });
   } catch (error) {
     res.status(400).json({ msg: "Invalid credentials", error: error.message });
+    // res.status(400).json(error);
   }
 };
 
