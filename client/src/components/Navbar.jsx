@@ -1,6 +1,8 @@
 import { Button } from '@mui/material'
 import { useLogout } from '../hooks/useLogout'
+
 const Navbar = () => {
+  // destruct logout from custom hook useLogout
   const { logout } = useLogout()
   const handleLogout = () => {
     logout()

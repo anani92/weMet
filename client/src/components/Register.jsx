@@ -3,8 +3,11 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/useAuthContext'
+import { Avatar, Box, Button, createTheme, CssBaseline, Grid, TextField, ThemeProvider, Typography } from '@mui/material'
+import { Container } from '@mui/material'
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 const Register = () => {
     const [backendErrors, setBackendErrors] = useState([])
     const { dispatch } = useAuthContext()
@@ -40,31 +43,112 @@ const Register = () => {
                 setBackendErrors(errorArr);
             })
     }
+    const theme = createTheme();
+
     return (
-        <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <div>{backendErrors.map((err, i) => <p key={i}>{err ? err : null}</p>)}</div>
-                <div>
-                    <p>{errors.username?.message}</p>
-                    <input type="text" placeholder='Enter username' {...register("username")} />
-                </div>
-                <div>
-                    <p>{errors.email?.message}</p>
-                    <input type="email" placeholder='Enter email' {...register("email")} />
-                </div>
-                <div>
-                    <p>{errors.password?.message}</p>
-                    <input type="password" placeholder='Enter password' {...register("password")} />
-                </div>
-                <div>
-                    <p>{errors.confirmPassword?.message}</p>
-                    <input type="password" placeholder='Confirm Passowrd' {...register("confirmPassword")} />
-                </div>
-                <div>
-                    <input type="submit" value="Submit" />
-                </div>
-            </form>
-        </div>
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 3,
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                    }}
+                >
+                    <Avatar sx={{ m: 1, bgcolor: 'success.main' }}>
+                        <LockOutlinedIcon />
+                    </Avatar>
+                    <Typography component="h1" variant="h5">
+                        Sign Up
+                    </Typography>
+                    <Box
+                        component='form'
+                        onSubmit={handleSubmit(onSubmit)}
+                        noValidate
+                        sx={{ mt: 1 }}
+                    >
+                        <Typography component="h1" variant="h5">
+                            {backendErrors.map((err, i) => <p style={{ color: 'red', textAlign: 'center' }} key={i}>{err ? err : null}</p>)}
+                        </Typography>
+                        <TextField
+                            {...register("username")}
+                            margin="normal"
+                            // required
+                            fullWidth
+                            type='text'
+                            label="Username"
+                            placeholder='Enter username...'
+                            autoComplete="userName"
+                            autoFocus
+                            error={errors.username?.message}
+                            helperText={errors.username?.message}
+                        />
+                        <TextField
+                            margin="normal"
+                            {...register("email")}
+                            // required
+                            fullWidth
+                            type='email'
+                            label="Email"
+                            placeholder='Enter email...'
+                            autoComplete="Email"
+                            autoFocus
+                            error={errors.email?.message}
+                            helperText={errors.email?.message}
+                        />
+                        <TextField
+                            margin="normal"
+                            {...register("password")}
+                            // required
+                            type='password'
+                            fullWidth
+                            label="Password"
+                            placeholder='Enter password...'
+                            autoComplete="password"
+                            autoFocus
+                            error={errors.password?.message}
+                            helperText={errors.password?.message}
+                        />
+                        <TextField
+                            margin="normal"
+                            {...register("confirmPassword")}
+                            // required
+                            type='password'
+                            fullWidth
+                            label="Confirm Password"
+                            placeholder='Enter password again...'
+                            autoComplete="ConfirmPassword"
+                            autoFocus
+                            error={errors.confirmPassword?.message}
+                            helperText={errors.confirmPassword?.message}
+                        />
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="success"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign Up
+                        </Button>
+                        <Grid container>
+                            <Grid item xs>
+                                <Link href="#" variant="body2">
+                                    Forgot password?
+                                </Link>
+                            </Grid>
+                            <Grid item>
+                                <Link to={`/login`} variant="body2">
+                                    Have an account? Sign In
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+            </Container>
+        </ThemeProvider >
     )
 }
 
