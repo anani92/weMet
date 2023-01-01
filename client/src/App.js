@@ -1,10 +1,9 @@
 import { Box } from "@mui/material";
-import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import {
   Login,
   Register,
-  // Sidebar,
   Navbar,
   Groups,
   Post,
@@ -19,20 +18,16 @@ function App() {
     <BrowserRouter>
       <Box>
         <Navbar />
-        {/* <Sidebar /> */}
         <Routes>
           <Route path={`/`} element={<Dashboard />} />
           <Route path={`/groups`} element={<Groups />} />
-          <Route path={`/post`} element={<Details />} />
-          <Route path={`/addpost`} element={<Post />} />
+          <Route path={`/post`} element={user ? <Details /> : <Login />} />
+          <Route path={`/addpost`} element={user ? <Post /> : <Register />} />
           <Route
             path={`/register`}
-            element={!user ? <Register /> : <Navigate to={"/"} />}
+            element={!user ? <Register /> : <Dashboard />}
           />
-          <Route
-            path={`/login`}
-            element={!user ? <Login /> : <Navigate to={-1} />}
-          />
+          <Route path={`/login`} element={!user ? <Login /> : <Dashboard />} />
         </Routes>
         <Footer />
       </Box>
