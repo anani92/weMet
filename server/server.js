@@ -11,6 +11,9 @@ app.use(cookieparser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 require("./routes/app.routs")(app);
+require("./routes/posts.routs")(app);
+require("./routes/group.routs")(app);
+
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Listening at Port ${PORT}`);

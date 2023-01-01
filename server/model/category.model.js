@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 const CategorySchema = new mongoose.Schema({
-        categorytitle: {type:String,
+        title: {type:String,
             unique: true,
             required: [
                 true,
-                "Category is required"
+                "Category title is required"
             ],
-            minLength: [5, "Category me have to be at least 5 characters."],},
+            minLength: [4, "Category me have to be at least 4 characters."],},
 
-            group:[
-            {
-            type:mongoose.Schema.Type.object,
-            ref:'Group'
-        }],
+           
+        group: [ {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Group",
+            }],
 
 }, { timestamps: true });
 module.exports.Category = mongoose.model('Category', CategorySchema);

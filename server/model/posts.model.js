@@ -1,24 +1,26 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema
+const ObjectId = Schema.Types.ObjectId
 const PostSchema = new mongoose.Schema({
         user:{
-            type: mongoose.Schema.Types.ObjectId,
+            type:ObjectId,
             ref: "User",
         },
 
-        postContent: {type:String,
+        title: {type:String,
             required: [
                 true,
                 "Content of the Post is required"
             ],
             minLength: [5, "question me have to be at least 5 characters."],},
 
-        category:  {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Category",
+        group:  {
+                type: ObjectId,
+                ref: "Group",
                 },
         comments:  [{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "Category",
+                type:ObjectId,
+                ref: "comments",
                 }],
 
 }, { timestamps: true });

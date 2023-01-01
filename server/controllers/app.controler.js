@@ -1,4 +1,4 @@
-const Group = require("../model/group.models");
+const Group = require("../model/group.model");
 const User = require("../model/user.models");
 const jwt = require("jsonwebtoken");
 
