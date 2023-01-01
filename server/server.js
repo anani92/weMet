@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+
 const cookieparser = require("cookie-parser");
 require("./config/mongoose.config");
 require("dotenv").config();
@@ -14,4 +15,3 @@ const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
   console.log(`Listening at Port ${PORT}`);
 });
- 

@@ -1,5 +1,5 @@
 const appController = require("../controllers/app.controler");
-// const { checkAuth } = require("../config/checkAuth.js");
+// const { requireAuth } = require("../middleware/requireAuth");
 
 module.exports = (app) => {
   // TODO: Groups APIs
