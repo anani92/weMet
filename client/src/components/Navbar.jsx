@@ -2,6 +2,8 @@ import { Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
+// date fns
+import formatDistanceToNow from 'date-fns/formatDistanceToNow'
 const Navbar = () => {
   // destruct logout from custom hook useLogout
   const { logout } = useLogout()
@@ -48,7 +50,7 @@ const Navbar = () => {
         >
           Logout
         </Button>
-        <span>Welcome {user.email}</span>
+        <span>Welcome {user.user.username} , {formatDistanceToNow(new Date(user.user.createdAt),{addSuffix:true})}</span>
       </div>}
 
     </div>
