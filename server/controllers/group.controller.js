@@ -13,7 +13,7 @@ module.exports.createGroup = async (request, response) => {
         category,
     })
         .then(group => response.json(group))
-    .catch(err => response.status(400).json(err))
+    .catch(err => console.log(err))
 }
 
 

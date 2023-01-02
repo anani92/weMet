@@ -24,23 +24,8 @@ const groupSchema = new mongoose.Schema({
             },
             category:{
               type:String,
-              unique:true,
-              required: [
-                true,
-                "category title is required"
-            ],
-            minLength: [4, "Category  have to be at least 4 characters."],
             },
-            // category:{
-            //   type: ObjectId,
-            //   ref: "Category",
-            // },
-          
-        // posts: [ {
-        //     type: ObjectId,
-        //     ref: "Posts",
-        //     }],
-          
+           
           
    
          
