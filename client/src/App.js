@@ -1,14 +1,6 @@
 import { Box } from "@mui/material";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
-import {
-  Login,
-  Register,
-  Navbar,
-  Groups,
-  Post,
-  Dashboard,
-  Footer,
-} from "./components";
+import { Login, Register, Navbar, Groups, Dashboard } from "./components";
 import { useEffect } from "react";
 // import axios from "axios";
 import { useAuthContext } from "./hooks/useAuthContext";
@@ -57,7 +49,6 @@ function App() {
           />
           <Route path={`/login`} element={!user ? <Login /> : <Dashboard />} />
         </Routes>
-        <Footer />
       </Box>
     </BrowserRouter>
   );
