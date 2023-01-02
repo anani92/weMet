@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
         color: '#fff',
         fontSize: '2.5rem',
         fontFamily: 'Nunito',
-        marginLeft: '29%',
+        marginLeft: '20%',
         textDecoration: 'none',
     },
 
@@ -32,7 +32,7 @@ const Dashboard = () => {
             <CssBaseline />
             <Header />
             <div >
-                <h2 className={classes.link}>Dive into our community ! thats weMet!</h2>
+                <h2 className={classes.link}>Dive into our community ! thats why weMet!</h2>
             </div>
             <PlaceToVisit />
 

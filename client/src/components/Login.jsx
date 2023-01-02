@@ -30,9 +30,56 @@ const Login = () => {
     }
     const google = () => {
         window.open("http://localhost:8000/auth/google", "_self")
+        const getUser = () => {
+            fetch("http://localhost:8000/auth/login/success", {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true,
+                },
+            })
+                .then((res) => {
+                    if (res.status === 200) return res.json();
+                    // throw new Error("Authentication has been failed");
+                })
+                .then((resObject) => {
+                    dispatch({ type: "LOGIN", payload: resObject.user });
+                    localStorage.setItem("user", JSON.stringify(resObject.user));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getUser();
+
     }
     const github = () => {
         window.open("http://localhost:8000/auth/github", "_self")
+        const getUser = () => {
+            fetch("http://localhost:8000/auth/login/success", {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                    "Access-Control-Allow-Credentials": true,
+                },
+            })
+                .then((res) => {
+                    if (res.status === 200) return res.json();
+                    // throw new Error("Authentication has been failed");
+                })
+                .then((resObject) => {
+                    dispatch({ type: "LOGIN", payload: resObject.user });
+                    localStorage.setItem("user", JSON.stringify(resObject.user));
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        getUser();
     }
     const theme = createTheme();
     return (

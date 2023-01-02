@@ -60,9 +60,8 @@ const createUser = async (req, res) => {
   try {
     const user = await User.signup(username, email, password);
     const token = createToken(user._id);
-    res
-      .status(200)
-      .json({ msg: "User added successfully", email, token, user });
+    // res.status(200).json({ provider: "weMet", token, user });
+    res.status(200).json(user);
     // res
     //   .cookie("access_token", token, {
     //     httpOnly: true,
@@ -86,9 +85,8 @@ const loginUser = async (req, res) => {
     //   })
     //   .status(200)
     //   .json({ msg: "user is logged successfully", user });
-    res
-      .status(200)
-      .json({ msg: "User logged in successfully", email, token, user });
+    // res.status(200).json({ token, user });
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ msg: "Invalid credentials", error: error.message });
     // res.status(400).json(error);

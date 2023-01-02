@@ -17,7 +17,7 @@ const Post = () => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
   return (
-    <Card sx={{ margin: 5 }}>
+    <Card sx={{ margin: 4 }}>
       <CardHeader
         avatar={
           <Avatar src={process.env.PUBLIC_URL + '/assets/fofo.jpg'} aria-label="recipe">

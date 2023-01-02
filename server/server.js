@@ -23,6 +23,7 @@ app.use(
     name: "session",
     keys: ["mob"],
     maxAge: 24 * 60 * 60 * 100,
+    // maxAge: 5,
   })
 );
 app.use(passport.initialize());

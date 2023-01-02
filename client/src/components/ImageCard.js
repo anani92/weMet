@@ -7,6 +7,7 @@ import Button from "@mui/material/Button";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@mui/material/Typography";
 import { Collapse } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -34,6 +35,7 @@ const useStyles = makeStyles({
 });
 
 export default function MediaCard({ place, checked }) {
+  const navigate = useNavigate();
   const classes = useStyles();
 
   return (
@@ -68,13 +70,8 @@ export default function MediaCard({ place, checked }) {
             </a>
           </Button>
           <Button size="small">
-            <a className={classes.link} href="/login">
+            <a className={classes.link} onClick={() => navigate("/login")}>
               Comment
-            </a>
-          </Button>
-          <Button size="small">
-            <a className={classes.link} href="/groups">
-              see more
             </a>
           </Button>
         </CardActions>

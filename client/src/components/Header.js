@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     color: "#fff",
-    fontSize: "4.5rem",
+    fontSize: "3.5rem",
   },
   goDown: {
     color: "#fff",
@@ -52,7 +52,6 @@ function Header() {
       <Collapse
         in={checked}
         {...(checked ? { timeout: 1000 } : {})}
-        collapsedHeight={50}
       >
         <div className={classes.container}>
           <h1 className={classes.title}>
