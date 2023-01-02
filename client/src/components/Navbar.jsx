@@ -1,5 +1,4 @@
 import { Avatar, Button } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
 import React, { useState } from "react";
@@ -53,9 +52,10 @@ const Navbar = () => {
   const handleLogout = () => {
     logout()
   }
-  const navigate = useNavigate()
   const classes = useStyles();
-
+  const openInNewTab = url => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
   return (
     <div>
       <React.Fragment>
@@ -68,9 +68,10 @@ const Navbar = () => {
               <InputBase placeholder="search..." />
             </Search>
             <Tabs sx={{ marginLeft: "auto" }} indicatorColor="secondary" textColor="inherit">
-              <Tab className={classes.Tab} label="Main" onClick={(() => navigate(`/`))} />
-              <Tab className={classes.Tab} label="Sign In" onClick={() => navigate(`/login`)} />
-              <Tab className={classes.Tab} label="Home" onClick={() => navigate(`/register`)} />
+              <Tab className={classes.Tab} label="Main" onClick={(() => openInNewTab("http://localhost:3000"))} />
+              <Tab className={classes.Tab} label="Sign In" onClick={() => openInNewTab("http://localhost:3000/login")} />
+              <Tab className={classes.Tab} label="Home" onClick={() => openInNewTab("http://localhost:3000/register")} />
+              <Tab className={classes.Tab} label="Logout" onClick={handleLogout} />
             </Tabs>
           </Toolbar>
         </AppBar>

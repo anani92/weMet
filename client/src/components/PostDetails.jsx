@@ -1,4 +1,4 @@
-import { Favorite, FavoriteBorder, MoreVert, Share } from "@mui/icons-material";
+import { Favorite, FavoriteBorder, MoreVert } from "@mui/icons-material";
 import {
     Avatar,
     Card,
@@ -9,7 +9,6 @@ import {
     Checkbox,
     IconButton,
     Typography,
-    Box,
 } from "@mui/material";
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 
