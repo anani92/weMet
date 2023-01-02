@@ -20,10 +20,10 @@ const PostSchema = new mongoose.Schema({
                 type: ObjectId,
                 ref: "Group",
                 },
-        comments:  [{
-                type:ObjectId,
-                ref: "comments",
-                }],
+        // comments:  [{
+        //         type:ObjectId,
+        //         ref: "comments",
+        //         }],
 
 }, { timestamps: true });
 module.exports.Posts = mongoose.model('Posts', PostSchema);

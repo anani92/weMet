@@ -49,10 +49,10 @@ module.exports.getComment = (request, response) => {
 }
 
 module.exports.findCommentsByPost = (request, response) => {
-    Comments.find({ category: request.params.id })
-    .then((allcomments) => res.json({ comments: allcomments }))
+    Comments.find({ post: request.params.id })
+    .then((allcomments) => response.json({ allcomments }))
     .catch((err) =>
-    res.json({ message: "something have gone wrong", error: err })
+    response.json({ message: "something have gone wrong", error: err })
     );
 }
 
