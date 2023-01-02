@@ -1,35 +1,47 @@
-import { Category } from '@mui/icons-material'
+import { Button, Divider, Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
-import { useState } from 'react'
 
-const Sidebar =(props) => {
-    const {groups,sumbitcategory} = props
+const Sidebar = (props) => {
+  const { groups, sumbitcategory } = props
 
-    const submitCat = (e)=>{
-        e.preventDefault();
-        sumbitcategory(groups.filter((gr=>gr.category===e.target.value)))
-        
-    }
+  const submitCat = (e) => {
+    e.preventDefault();
+    sumbitcategory(groups.filter((gr => gr.category === e.target.value)))
 
+  }
+  const buttonStyle = {
+    color: '#063970',
+    fontWeight: '700',
+  }
   return (
-    <div>
-        <h3>Categories</h3>
-    <div style={{display:'flex',flexDirection:'column',marginTop:'5rem',marginLeft:'10px' ,width:'100px'}}>
-        
-        <button  value="Sports" onClick={submitCat} >Sports</button>
-        <button value="Anime" onClick={submitCat} >Anime</button>
-
-     
-        <button value="LifeStyle" onClick={submitCat}>LifeStyle</button>
-        <button  value="IT" onClick={submitCat}>IT</button>
-        <button  value="Fashion" onClick={submitCat}>Fashion</button>
-        <button  value="Movies"  onClick={submitCat}>Movies</button>
-        <button  value="Healthy"  onClick={submitCat}>Healthy</button>
-        <button  value="Animals"  onClick={submitCat}>Animals</button>
-        <button  value="Celebrities"  onClick={submitCat}>Celebrities</button>
-
-    </div>
-    </div>
+    <Paper
+      elevation={3}
+      sx={{ padding: '1rem 0 1rem 1rem', bgcolor:'',margin:'0 .5rem' }}
+    >
+      <Typography
+        ml={1}
+        align='left'
+        variant='h5'
+        color="#CFA76E"
+        fontWeight='bold'
+      >
+        All Categories:
+      </Typography>
+      <Stack
+        mt={2}
+        direction="column"
+        divider={<Divider orientation="horizontal" flexItem />}
+        spacing={1}
+        width='40%'
+        marginLeft={3}
+      >
+        <Button sx={buttonStyle} value="Sports" onClick={submitCat} >Sports</Button>
+        <Button sx={buttonStyle} value="Anime" onClick={submitCat} >Anime</Button>
+        <Button sx={buttonStyle} value="Movies" onClick={submitCat}>Movies</Button>
+        <Button sx={buttonStyle} value="Marriage" onClick={submitCat}>Marriage</Button>
+        <Button sx={buttonStyle} value="IT" onClick={submitCat}>IT</Button>
+      </Stack>
+    </Paper>
   )
 }
 
