@@ -48,6 +48,7 @@ function App() {
         <Routes>
           <Route path={`/`} element={<Dashboard />} />
           <Route path={`/groups`} element={<Groups />} />
+          <Route path={`/group/posts`} element={<Groups />} />
           <Route path={`/post`} element={user ? <Details /> : <Login />} />
           <Route path={`/addpost`} element={user ? <Post /> : <Login />} />
           <Route
