@@ -1,34 +1,27 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema
-const ObjectId = Schema.Types.ObjectId
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
-const groupSchema = new mongoose.Schema({
-        title: {type:String,
-            unique: true,
-            required: [
-                true,
-                "group title is required"
-            ],
-            minLength: [4, "Group have to be at least 4 characters."],},
+const groupSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      unique: true,
+      required: [true, "group title is required"],
+    },
 
+    description: {
+      type: String,
+    },
 
-            description: 
-            { 
-              type: String
-            },
-
-            owner: 
-            {
-              type: ObjectId,
-              ref: "User",
-            },
-            category:{
-              type:String,
-            },
-           
-          
-   
-         
-
-}, { timestamps: true });
-module.exports.Group = mongoose.model('Group', groupSchema);
+    owner: {
+      type: ObjectId,
+      ref: "User",
+    },
+    category: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
+module.exports.Group = mongoose.model("Group", groupSchema);
