@@ -7,8 +7,7 @@ const CategorySchema = new mongoose.Schema({
                 "Category title is required"
             ],
             minLength: [4, "Category me have to be at least 4 characters."],},
-
-           
+            
         group: [ {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Group",

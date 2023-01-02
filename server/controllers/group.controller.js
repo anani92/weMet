@@ -12,6 +12,7 @@ module.exports.createGroup = async (request, response) => {
         category,
     })
         .then(group => response.json(group))
+    .then(group => Category.findByIdAndUpdate({_id: category},{"group":group._id},{new:true}))
     .catch(err => response.status(400).json(err))
 }
 module.exports.createCategory = (request, response) => {
@@ -23,6 +24,8 @@ module.exports.createCategory = (request, response) => {
         .catch(err => response.status(400).json(err))
     }
 
+
+
 module.exports.getAllGroup = (request, response) => {
     Group.find({})
         .then(Post => response.json(Post))
@@ -33,6 +36,16 @@ module.exports.getAllCategories = (request, response) => {
         .then(cat => response.json(cat))
         .catch(err => response.json(err))
 }
+
+
+module.exports.findGroupByCategory = (request, response) => {
+    Group.find({ category: request.params.id })
+    .then((allgroupss) => res.json({ groupss: allgroupss }))
+    .catch((err) =>
+      res.json({ message: "something have gone wrong", error: err })
+    );
+}
+
 
 module.exports.getGroup = (request, response) => {
     Group.findOne({_id:request.params.id})
@@ -50,12 +63,27 @@ module.exports.updateGroup = (request, response) => {
         .catch(err => response.json(err))
 }
 
+module.exports.updateCategory = (request, response) => {
+    Category.findOneAndUpdate({_id: request.params.id}, request.body, {new:true})
+        .then(updatedGroup => response.json(updatedGroup))
+        .catch(err => response.json(err))
+}
+
+
 
 module.exports.deleteGroup = (request, response) => {
     Group.deleteOne({ _id: request.params.id })
         .then(deleteConfirmation => response.json(deleteConfirmation))
         .catch(err => response.json(err))
 }
+
+
+module.exports.deleteCategory = (request, response) => {
+    Category.deleteOne({ _id: request.params.id })
+        .then(deleteConfirmation => response.json(deleteConfirmation))
+        .catch(err => response.json(err))
+}
+
 
 
 
