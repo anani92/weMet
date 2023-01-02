@@ -8,11 +8,12 @@ import {
   Post,
   Dashboard,
   Footer,
-  Details,
 } from "./components";
 import { useEffect } from "react";
 // import axios from "axios";
 import { useAuthContext } from "./hooks/useAuthContext";
+import GroupPost from "./components/GroupPost";
+import PostDetails from "./components/PostDetails";
 function App() {
   const { user, dispatch } = useAuthContext();
   useEffect(() => {
@@ -48,9 +49,8 @@ function App() {
         <Routes>
           <Route path={`/`} element={<Dashboard />} />
           <Route path={`/groups`} element={<Groups />} />
-          <Route path={`/group/posts`} element={<Groups />} />
-          <Route path={`/post`} element={user ? <Details /> : <Login />} />
-          <Route path={`/addpost`} element={user ? <Post /> : <Login />} />
+          <Route path={`/group/posts`} element={<GroupPost />} />
+          <Route path={`/post`} element={user ? <PostDetails /> : <Login />} />
           <Route
             path={`/register`}
             element={!user ? <Register /> : <Dashboard />}

@@ -6,5 +6,4 @@ export { default as Dashboard } from "./Dashboard";
 export { default as Post } from "./Post";
 export { default as Groups } from "./Groups";
 export { default as Footer } from "./Footer";
-export { default as Details } from "./Details";
 export { default as Header } from "./Header";
