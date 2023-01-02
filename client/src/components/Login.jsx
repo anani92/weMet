@@ -28,19 +28,25 @@ const Login = () => {
                 setBackendErrors(err.response.data.error)
             })
     }
+    const google = () => {
+        window.open("http://localhost:8000/auth/google", "_self")
+    }
+    const github = () => {
+        window.open("http://localhost:8000/auth/github", "_self")
+    }
     const theme = createTheme();
     return (
         <Box
-            // sx={{
-            //     backgroundImage: `url(${social2})`,
-            //     backgroundSize: 'cover',
-            //     width: `calc(90vw)`,
-            //     height: "90vh",
-            //     backgroundPosition: '25% 75%',
-            //     opacity: "",
-            //     margin: '1rem auto',
-            //     padding: '1rem',
-            // }}
+        // sx={{
+        //     backgroundImage: `url(${social2})`,
+        //     backgroundSize: 'cover',
+        //     width: `calc(90vw)`,
+        //     height: "90vh",
+        //     backgroundPosition: '25% 75%',
+        //     opacity: "",
+        //     margin: '1rem auto',
+        //     padding: '1rem',
+        // }}
         >
 
             <ThemeProvider theme={theme}>
@@ -103,6 +109,7 @@ const Login = () => {
                             </Button>
                             <Button
                                 fullWidth
+                                onClick={google}
                                 variant="outlined"
                                 color="info"
                                 startIcon={<GoogleIcon />}
@@ -112,6 +119,7 @@ const Login = () => {
                             </Button>
                             <Button
                                 fullWidth
+                                onClick={github}
                                 variant="outlined"
                                 color="info"
                                 startIcon={<GitHubIcon />}

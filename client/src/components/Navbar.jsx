@@ -1,4 +1,4 @@
-import { Button } from '@mui/material'
+import { Avatar, Button } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
@@ -50,7 +50,12 @@ const Navbar = () => {
         >
           Logout
         </Button>
-        <span>Welcome {user.user.username} , {formatDistanceToNow(new Date(user.user.createdAt),{addSuffix:true})}</span>
+
+        {user.provider ? <div>
+          <span>{user.username}</span>
+          <Avatar alt="prof pic" src={user._json.avatar_url} />
+        </div> : <h1>{user.user.username}, Registered {formatDistanceToNow(new Date(user.user.createdAt), { addSuffix: true })}</h1>}
+
       </div>}
 
     </div>
