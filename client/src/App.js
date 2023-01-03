@@ -1,13 +1,13 @@
-import { Box } from "@mui/material";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import { Login, Register, Navbar, Groups, Dashboard } from "./components";
+import { Box } from '@mui/material'
+import { Routes, Route, BrowserRouter } from 'react-router-dom'
+import { Login, Register, Navbar, Groups, Dashboard } from './components'
 // import { useEffect } from "react";
 // import axios from "axios";
-import { useAuthContext } from "./hooks/useAuthContext";
-import GroupPost from "./components/GroupPost";
-import PostDetails from "./components/PostDetails";
+import { useAuthContext } from './hooks/useAuthContext'
+import GroupPost from './components/GroupPost'
+import PostDetails from './components/PostDetails'
 function App() {
-  const { user, dispatch } = useAuthContext();
+  const { user, dispatch } = useAuthContext()
   // useEffect(() => {
   //   const getUser = () => {
   //     fetch("http://localhost:8000/auth/login/success", {
@@ -35,23 +35,21 @@ function App() {
   // }, []);
 
   return (
-    <BrowserRouter>
-      <Box>
-        <Navbar />
-        <Routes>
-          <Route path={`/`} element={<Dashboard />} />
-          <Route path={`/groups`} element={<Groups />} />
-          <Route path={`/group/posts`} element={<GroupPost />} />
-          <Route path={`/post`} element={user ? <PostDetails /> : <Login />} />
-          <Route
-            path={`/register`}
-            element={!user ? <Register /> : <Dashboard />}
-          />
-          <Route path={`/login`} element={!user ? <Login /> : <Dashboard />} />
-        </Routes>
-      </Box>
-    </BrowserRouter>
-  );
+    <Box>
+      <Navbar />
+      <Routes>
+        <Route path={`/`} element={<Dashboard />} />
+        <Route path={`/groups`} element={<Groups />} />
+        <Route path={`/group/posts`} element={<GroupPost />} />
+        <Route path={`/post`} element={user ? <PostDetails /> : <Login />} />
+        <Route
+          path={`/register`}
+          element={!user ? <Register /> : <Dashboard />}
+        />
+        <Route path={`/login`} element={!user ? <Login /> : <Dashboard />} />
+      </Routes>
+    </Box>
+  )
 }
 
-export default App;
+export default App

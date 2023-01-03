@@ -34,7 +34,6 @@ const Dashboard = () => {
           Dive into our community ! thats why weMet!
         </h2>
       </div>
-      <ChatPage></ChatPage>
       <PlaceToVisit />
     </div>
   )
