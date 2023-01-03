@@ -6,6 +6,7 @@ import { Login, Register, Navbar, Groups, Dashboard } from './components'
 import { useAuthContext } from './hooks/useAuthContext'
 import GroupPost from './components/GroupPost'
 import PostDetails from './components/PostDetails'
+import ChatPage from './components/Chat/pages/ChatPage'
 function App() {
   const { user, dispatch } = useAuthContext()
   // useEffect(() => {
@@ -40,6 +41,8 @@ function App() {
       <Routes>
         <Route path={`/`} element={<Dashboard />} />
         <Route path={`/groups`} element={<Groups />} />
+        <Route path={`/chats`} element={<ChatPage />} />
+
         <Route path={`/group/posts`} element={<GroupPost />} />
         <Route path={`/post`} element={user ? <PostDetails /> : <Login />} />
         <Route

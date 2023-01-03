@@ -1,5 +1,5 @@
-import React from "react";
-import { Spinner, Box } from "@chakra-ui/react";
+import React from 'react'
+import { Spinner, Box } from '@chakra-ui/react'
 
 const Loader = () => {
   return (
@@ -20,7 +20,7 @@ const Loader = () => {
         speed="0.4s"
       />
     </Box>
-  );
-};
+  )
+}
 
-export default Loader;
+export default Loader

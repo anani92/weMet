@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Modal,
   ModalOverlay,
@@ -30,6 +30,17 @@ const GroupChatModal = ({ children }) => {
   const [loading, setLoading] = useState(false)
   const [submitLoading, setSubmitLoading] = useState(false)
   const { user, chats, setChats } = ChatState()
+  const [users, setUsers] = useState([])
+
+  const getUsers = async () => {
+    let data = await axios
+      .get(`http://localhost:8000/api/users`)
+      .then((res) => {
+        setUsers(res.data.allUsers)
+        console.log(res)
+      })
+  }
+  useEffect(() => getUsers(), [])
 
   const handleSearch = async (query) => {
     setSearch(query)
@@ -44,7 +55,11 @@ const GroupChatModal = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       }
-      const { data } = await axios.get(`/api/users?search=${search}`, config)
+      const { data } = await axios.get(
+        `http://localhost:8000/api/users?search=${search}`,
+        config
+      )
+      console.log(data)
       setSearchResult(data.users)
       setLoading(false)
     } catch (err) {
@@ -95,7 +110,7 @@ const GroupChatModal = ({ children }) => {
       }
       const usersString = JSON.stringify(selectedUser.map((u) => u._id))
       const { data } = await axios.post(
-        '/api/chats/group',
+        'http://localhost:8000/api/chats/group',
         { name: groupChatName, users: usersString },
         config
       )

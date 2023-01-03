@@ -18,8 +18,15 @@ import axios from 'axios'
 import ScrollableChat from './ScrollableChat'
 // for socket.io
 import io from 'socket.io-client'
-const ENDPOINT = 'https://react-chat-vars.herokuapp.com'
-var socket, selectedChatCompare
+// const ENDPOINT = 'https://localhost:3000'
+
+var selectedChatCompare
+// let socket = io(':8000', {
+//   withCredentials: true,
+//   extraHeaders: {
+//     'my-custom-header': 'abcd',
+//   },
+// })
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const { user, selectedChat, setSelectedChat, notification, setNotification } =
@@ -30,6 +37,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [socketConnected, setSocketConnected] = useState(false)
   const [typing, setTyping] = useState()
   const [isTyping, setIsTyping] = useState()
+  const [socket] = useState(() => io(':8000'))
 
   const fetchAllMessages = async () => {
     if (!selectedChat) return
@@ -41,7 +49,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       }
       const { data } = await axios.get(
-        `/api/message/${selectedChat._id}`,
+        `http://localhost:8000/api/message/${selectedChat._id}`,
         config
       )
       setMessages(data)
@@ -66,7 +74,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         }
         setNewMessage('')
         const { data } = await axios.post(
-          '/api/message',
+          'http://localhost:8000/api/message',
           {
             chatId: selectedChat._id,
             content: newMessage,
@@ -92,7 +100,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
       }
       await axios.post(
-        '/api/notification',
+        'http://localhost:8000/api/notification',
         {
           notification: notification[0].chatId.latestMessage,
         },
@@ -104,8 +112,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   }
 
   useEffect(() => {
-    socket = io(ENDPOINT)
-    socket.emit('setup', user.user)
+    socket.emit('setup', user)
     socket.on('connected', () => setSocketConnected(true))
     socket.on('typing', () => setIsTyping(true))
     socket.on('stop typing', () => setIsTyping(false))

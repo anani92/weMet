@@ -1,6 +1,6 @@
-import React from "react";
-import { Avatar, Box, Text } from "@chakra-ui/react";
-import { MdAlternateEmail } from "react-icons/md";
+import React from 'react'
+import { Avatar, Box, Text } from '@chakra-ui/react'
+import { MdAlternateEmail } from 'react-icons/md'
 
 const UserListItem = ({ user, handleFunction }) => {
   return (
@@ -10,8 +10,8 @@ const UserListItem = ({ user, handleFunction }) => {
       bg="#e8e8e8"
       transition="200ms ease-in-out"
       _hover={{
-        background: "#1d1931",
-        color: "#fff",
+        background: '#1d1931',
+        color: '#fff',
       }}
       w="100%"
       d="flex"
@@ -39,7 +39,7 @@ const UserListItem = ({ user, handleFunction }) => {
         </Text>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default UserListItem;
+export default UserListItem

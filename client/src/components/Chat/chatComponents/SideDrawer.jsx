@@ -41,9 +41,9 @@ const SideDrawer = () => {
     notification,
     setNotification,
   } = ChatState()
-
+  console.log(user)
   const logoutHandler = () => {
-    localStorage.removeItem('deLinkUser')
+    localStorage.removeItem('user')
     navigate('/')
   }
 
@@ -58,7 +58,11 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       }
-      const { data } = await axios.get(`/api/users?search=${search}`, config)
+      const { data } = await axios.get(
+        `http://localhost:8000/api/allUsers?search=${search}`,
+        config
+      )
+      console.log(data)
       setSearchResult(data.users)
       setLoading(false)
     } catch (err) {
@@ -77,7 +81,11 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       }
-      const { data } = await axios.post(`/api/chats`, { userId }, config)
+      const { data } = await axios.post(
+        `http://localhost:8000/api/chats`,
+        { userId },
+        config
+      )
       if (!chats.find((item) => item._id === data._id))
         setChats([data, ...chats])
 
@@ -98,7 +106,7 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       }
-      await axios.delete(`/api/notification/${id}`, config)
+      await axios.delete(`http://localhost:8000/api/notification/${id}`, config)
     } catch (err) {
       toast.error(err)
     }
@@ -110,7 +118,10 @@ const SideDrawer = () => {
           Authorization: `Bearer ${user.token}`,
         },
       }
-      const { data } = await axios.get('/api/notification', config)
+      const { data } = await axios.get(
+        'http://localhost:8000/api/notification/',
+        config
+      )
       setNotification(data.map((item) => item.notificationId))
     } catch (err) {
       toast.error(err)
@@ -181,8 +192,8 @@ const SideDrawer = () => {
               <Avatar
                 size="sm"
                 cursor="pointer"
-                name={user.user.name}
-                src={user.user.image}
+                name={user.username}
+                // src={user.user.image}
               />
             </MenuButton>
             <MenuList>

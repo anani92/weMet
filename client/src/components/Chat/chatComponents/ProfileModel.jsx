@@ -15,8 +15,11 @@ import { IoEyeSharp } from 'react-icons/io5'
 
 import { IconButton } from '@chakra-ui/button'
 import { useDisclosure } from '@chakra-ui/hooks'
-const ProfileModel = ({ user, children }) => {
+import { ChatState } from '../context/ChatProvider'
+const ProfileModel = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const { user } = ChatState()
+  console.log(user)
   return (
     <>
       {children ? (
@@ -37,7 +40,7 @@ const ProfileModel = ({ user, children }) => {
             justifyContent="center"
             textTransform="capitalize"
           >
-            {user.name}
+            {user.user.username}
           </ModalHeader>
           <Divider />
           <ModalCloseButton />
@@ -49,7 +52,7 @@ const ProfileModel = ({ user, children }) => {
             bg="whiteAlpha.500"
             p="20px 0"
           >
-            <Image boxSize="150px" src={user.image} alt={user.name} />
+            <Image boxSize="150px" src="#" alt={user.username} />
             <Text mt="2rem" fontSize={{ base: '1rem', md: '1.25rem' }}>
               Email: {user.email}
             </Text>

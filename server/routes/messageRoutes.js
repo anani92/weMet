@@ -1,13 +1,11 @@
-const router = require("express").Router();
-const auth = require("../middleware/authMiddleware");
+const auth = require('../middleware/authMiddleware')
 const {
   sendMessage,
   fetchMessage,
-} = require("../controllers/messageControllers");
+} = require('../controllers/messageControllers')
+const express = require('express')
+const app = express()
+app.post('/', auth, sendMessage)
+app.get('/:chatId', auth, fetchMessage)
 
-// Route to send the message to the recipient
-router.route("/").post(auth, sendMessage);
-// Route to retrieve all the message
-router.route("/:chatId").get(auth, fetchMessage);
-
-module.exports = router;
+module.exports = app
