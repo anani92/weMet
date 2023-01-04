@@ -11,6 +11,7 @@ import {
   FormControl,
   Input,
   Box,
+  Button,
 } from '@chakra-ui/react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -36,39 +37,24 @@ const GroupChatModal = ({ children }) => {
     let data = await axios
       .get(`http://localhost:8000/api/users`)
       .then((res) => {
-        setUsers(res.data.allUsers)
+        setUsers(res.data)
         console.log(res)
       })
+      .catch((err) => console.log(err))
+    return data
   }
   useEffect(() => getUsers(), [])
 
-  const handleSearch = async (query) => {
+  const handleSearch = (query) => {
     setSearch(query)
     if (!query) {
       // ? if query string is empty
-      toast.info('please search to add users')
+      setSearchResult(users)
     }
-    setLoading(true)
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-      const { data } = await axios.get(
-        `http://localhost:8000/api/users?search=${search}`,
-        config
-      )
-      console.log(data)
-      setSearchResult(data.users)
-      setLoading(false)
-    } catch (err) {
-      toast.error(err)
-      setLoading(false)
-    }
+    const result = users.filter((user) => user.username.includes(query))
+    setSearchResult(result)
   }
   const handleSelectUser = (user) => {
-    console.log(user)
     if (selectedUser.includes(user)) {
       toast.info('User already added to the Group')
       return
@@ -79,22 +65,10 @@ const GroupChatModal = ({ children }) => {
     setSelectedUser(selectedUser.filter((sel) => sel._id !== user._id))
   }
   const handleSubmit = async () => {
-    if (user.user.email === 'guest@deLink.com') {
-      toast.info('Guest cannot create groups')
+    if (!groupChatName || !selectedUser) {
+      toast.info('Please fill in all the required fields')
       return
     }
-    if (
-      selectedUser.map((u) => {
-        if (u.email === 'guest@deLink.com') {
-          toast.info('Guest user can not be added in group')
-        }
-        return {}
-      })
-    )
-      if (!groupChatName || !selectedUser) {
-        toast.info('Please fill in all the required fields')
-        return
-      }
     if (selectedUser.length <= 2) {
       toast.info('Group must have at least 3 members')
       return
@@ -102,22 +76,15 @@ const GroupChatModal = ({ children }) => {
     // create chat
     setSubmitLoading(true)
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
       const usersString = JSON.stringify(selectedUser.map((u) => u._id))
+      console.log(usersString)
       const { data } = await axios.post(
         'http://localhost:8000/api/chats/group',
-        { name: groupChatName, users: usersString },
-        config
+        { name: groupChatName, users: usersString, user: user }
       )
       setChats([data, ...chats])
       onClose()
       setSubmitLoading(false)
-      toast.success(`${groupChatName} successfully created`)
       setSelectedUser([])
     } catch (err) {
       toast.error(err)
@@ -190,13 +157,13 @@ const GroupChatModal = ({ children }) => {
           </ModalBody>
 
           <ModalFooter>
-            <button
+            <Button
               onClick={handleSubmit}
               rightIcon={<IoIosArrowForward />}
               isLoading={submitLoading}
             >
               Create
-            </button>
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

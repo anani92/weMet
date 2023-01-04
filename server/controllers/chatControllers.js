@@ -15,7 +15,7 @@ const accessChat = asyncHandler(async (req, res) => {
   var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
-      { users: { $elemMatch: { $eq: req.user._id } } },
+      { users: { $elemMatch: { $eq: req.body.sender } } },
       { users: { $elemMatch: { $eq: userId } } },
     ],
   })
@@ -33,7 +33,7 @@ const accessChat = asyncHandler(async (req, res) => {
     var chatData = {
       chatName: 'sender',
       isGroupChat: false,
-      users: [req.user._id, userId],
+      users: [req.body.sender, userId],
     }
 
     try {
@@ -54,6 +54,7 @@ const accessChat = asyncHandler(async (req, res) => {
 // @route		GET /api/chats
 // @access		private
 const fetchChats = asyncHandler(async (req, res) => {
+  console.log(req.user, 'iiii')
   try {
     var allChats = await Chat.find({
       users: { $elemMatch: { $eq: req.user._id } },
@@ -70,21 +71,19 @@ const fetchChats = asyncHandler(async (req, res) => {
 
     res.status(200).send(allChats)
   } catch (err) {
+    console.log(err)
     res.status(500)
     throw new Error('Server could not work on the request')
   }
 })
 
-// @desc		Create a new Chat room
-// @route		POST /api/chats/group
-// @access		Private
 const createGroupChat = asyncHandler(async (req, res) => {
   if (!req.body.users || !req.body.name) {
     return res.status(400).send({
       message: 'Please add all the required fields',
     })
   }
-  var users = JSON.parse(req.body.users)
+  let users = JSON.parse(req.body.users)
   if (users.length < 2) {
     return res.status(400).send({
       message: 'A group must have more than 2 users',
@@ -93,6 +92,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
   // add the current logged in user as well in the users array
   users.push(req.user)
+  console.log(users)
   try {
     const groupChat = await Chat.create({
       chatName: req.body.name,
@@ -106,6 +106,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
     res.status(200).json(fullGroupChat)
   } catch (err) {
+    console.log(err)
     res.status(500)
     throw new Error('Server could not work on the request')
   }

@@ -10,7 +10,6 @@ import { ChakraProvider } from '@chakra-ui/react'
 const ChatPage = () => {
   const { user } = ChatState()
   const [fetchAgain, setFetchAgain] = useState(false)
-  console.log(user)
   return (
     <ChakraProvider>
       <div style={{ height: '100vh' }} className="chatContainer">

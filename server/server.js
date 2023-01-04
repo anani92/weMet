@@ -2,29 +2,11 @@ const express = require('express')
 const cors = require('cors')
 const app = express()
 const cookieSession = require('cookie-session')
-const passport = require('passport')
-const appRouter = require('./routes/app.routs')
-const chatRouter = require('./routes/chatRoutes')
-const messageRouter = require('./routes/messageRoutes')
-const notificationRouter = require('./routes/notificationRoutes')
-const groupRouter = require('./routes/group.routs')
-const { errorHandler, routeNotFound } = require('./middleware/errorMiddleware')
-
-app.use('/api/chats', chatRouter)
-app.use('/api/', appRouter)
-app.use('/api/messages', messageRouter)
-app.use('/api/notification', notificationRouter)
-app.use('/api/group', groupRouter)
-
-app.use(cors())
-require('./passport')
-// const cookieparser = require("cookie-parser");
 const oauth2 = require('./routes/oauth2')
+const passport = require('passport')
+require('./passport')
 require('./config/mongoose.config')
 require('dotenv').config()
-app.use(routeNotFound)
-// app.use(cookieparser());
-app.use(errorHandler)
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(
@@ -35,19 +17,45 @@ app.use(
     // maxAge: 5,
   })
 )
+const postRouter = require('./routes/posts.routs')
+
+const appRouter = require('./routes/app.routs')
+const chatRouter = require('./routes/chatRoutes')
+const messageRouter = require('./routes/messageRoutes')
+const notificationRouter = require('./routes/notificationRoutes')
+const groupRouter = require('./routes/group.routs')
+const { errorHandler, routeNotFound } = require('./middleware/errorMiddleware')
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  })
+)
 app.use(passport.initialize())
 app.use(passport.session())
+app.use('/api/chats', chatRouter)
+app.use('/api', appRouter)
+app.use('/api/message', messageRouter)
+app.use('/api/notification', notificationRouter)
+app.use('/api/group', groupRouter)
 app.use('/auth', oauth2)
-require('./routes/posts.routs')(app)
+app.use('/api/post', postRouter)
+// const cookieparser = require("cookie-parser");
+// app.use(cookieparser());
 
 const PORT = process.env.PORT || 8000
 
 const server = app.listen(PORT, () => {
   console.log(`Listening at Port ${PORT}`)
 })
+
+app.use(routeNotFound)
+app.use(errorHandler)
+// Chat App
 const io = require('socket.io')(server, {
   cors: {
-    origin: 'http://localhost:3000',
+    origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   },

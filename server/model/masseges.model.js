@@ -9,6 +9,7 @@ const MassegesSchema = new mongoose.Schema(
         type: ObjectId,
         ref: 'User',
       },
+      ,
     ],
     group: {
       type: ObjectId,
@@ -17,4 +18,6 @@ const MassegesSchema = new mongoose.Schema(
   },
   { timestamps: true }
 )
-module.exports.Masseges = mongoose.model('Masseges', MassegesSchema)
+
+const Massege = mongoose.model('Massege', MassegesSchema)
+module.exports = Massege

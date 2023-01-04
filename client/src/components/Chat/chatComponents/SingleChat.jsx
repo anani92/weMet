@@ -43,18 +43,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     if (!selectedChat) return
     try {
       setLoading(true)
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
+
       const { data } = await axios.get(
-        `http://localhost:8000/api/message/${selectedChat._id}`,
-        config
+        `http://localhost:8000/api/message/${selectedChat._id}`
       )
       setMessages(data)
       setLoading(false)
       socket.emit('join chat', selectedChat._id)
+      console.log(selectedChat._id)
     } catch (err) {
       toast.error(err)
       setLoading(false)
@@ -65,47 +61,24 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const sendMessage = async (e) => {
     if (e.key === 'Enter' && newMessage) {
       socket.emit('stop typing', selectedChat._id)
-      try {
-        const config = {
-          headers: {
-            'Content-type': 'application/json',
-            Authorization: `Bearer ${user.token}`,
-          },
-        }
-        setNewMessage('')
-        const { data } = await axios.post(
-          'http://localhost:8000/api/message',
-          {
-            chatId: selectedChat._id,
-            content: newMessage,
-          },
-          config
-        )
-        socket.emit('new message', data)
-        setMessages([...messages, data])
-      } catch (err) {
-        toast.error(err)
-        return
-      }
+
+      setNewMessage('')
+      const { data } = await axios.post('http://localhost:8000/api/message', {
+        sender: user._id,
+        chatId: selectedChat._id,
+        content: newMessage,
+      })
+      socket.emit('new message', data)
+      setMessages((messages) => setMessages([...messages, data]))
     }
   }
 
   const saveNotification = async () => {
     if (!notification.length) return
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-      await axios.post(
-        'http://localhost:8000/api/notification',
-        {
-          notification: notification[0].chatId.latestMessage,
-        },
-        config
-      )
+      await axios.post('http://localhost:8000/api/notification', {
+        notification: notification[0].chatId.latestMessage,
+      })
     } catch (err) {
       toast.error(err)
     }

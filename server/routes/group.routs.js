@@ -1,5 +1,4 @@
 const GroupController = require('../controllers/group.controller')
-// const { checkAuth } = require("../config/checkAuth.js");
 
 const express = require('express')
 const app = express()

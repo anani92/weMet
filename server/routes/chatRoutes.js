@@ -9,15 +9,13 @@ const {
 const express = require('express')
 const app = express()
 
-const auth = require('../middleware/authMiddleware')
+app.post('/', accessChat)
+app.get('/', fetchChats)
+app.post('/group', createGroupChat)
 
-app.post('/', auth, accessChat)
-app.get('/', auth, fetchChats)
-app.route('/group').post(auth, createGroupChat)
+app.put('/grouprename', renameGroup)
 
-app.route('/grouprename').put(auth, renameGroup)
+app.put('/groupremove', removeFromGroup)
 
-app.route('/groupremove').put(auth, removeFromGroup)
-
-app.route('/groupadd').put(auth, addToGroup)
+app.put('/groupadd', addToGroup)
 module.exports = app

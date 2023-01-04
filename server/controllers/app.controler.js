@@ -1,9 +1,6 @@
-const Group = require('../model/group.model')
 const User = require('../model/user.models')
 const jwt = require('jsonwebtoken')
-
-
-
+const asyncHandler = require('express-async-handler')
 // FIXME:User APIs
 // token to be sent to frontend carrying user credentials (payload,header,secret) all encoded
 const createToken = (_id) => {
@@ -16,8 +13,10 @@ const createUser = async (req, res) => {
   try {
     const user = await User.signup(username, email, password)
     const token = createToken(user._id)
+    req.user = user
+
     // res.status(200).json({ provider: "weMet", token, user });
-    res.status(200).json({ user, token })
+    res.status(200).json(user)
     // res
     //   .cookie("access_token", token, {
     //     httpOnly: true,
@@ -30,24 +29,26 @@ const createUser = async (req, res) => {
 }
 
 // login User
-const loginUser = async (req, res) => {
-  const { email, password } = req.body
+const loginUser = asyncHandler(async (req, res) => {
   try {
-    const user = await User.login(email, password)
-    const token = createToken(user._id)
-    // res
-    //   .cookie("access_token", token, {
-    //     httpOnly: true,
-    //   })
-    //   .status(200)
-    //   .json({ msg: "user is logged successfully", user });
-    // res.status(200).json({ provider: "weMet", token, user });
-    res.status(200).json({ user, token })
-  } catch (error) {
-    res.status(400).json({ msg: 'Invalid credentials', error: error.message })
-    // res.status(400).json(error);
+    const { email } = req.body
+    const userExist = await User.findOne({ email })
+
+    if (userExist) {
+      res.status(200).json({
+        user: userExist,
+        message: 'user successfully logged in',
+      })
+    } else {
+      res.status(400)
+      throw new Error('Invalid email or password')
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(500)
+    throw new Error(err)
   }
-}
+})
 
 const allUsers = (req, res) => {
   User.find({})
@@ -57,13 +58,7 @@ const allUsers = (req, res) => {
     )
 }
 
-// const logoutUser = (req, res) => {
-//   req.clearCookie("access_token");
-//   res.status(200).json("Logout sucessfull");
-// };
-
 module.exports = {
-
   // User APIs
   createUser,
   loginUser,

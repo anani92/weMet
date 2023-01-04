@@ -26,7 +26,7 @@ const UserListItem = ({ user, handleFunction }) => {
         mr={2}
         size="sm"
         cursor="pointer"
-        name={user.name}
+        name={user.username}
         src={user.image}
       />
       <Box>
@@ -35,7 +35,7 @@ const UserListItem = ({ user, handleFunction }) => {
           <b>
             <MdAlternateEmail />
           </b>
-            {user.email}
+            {user.username}
         </Text>
       </Box>
     </Box>

@@ -1,4 +1,4 @@
-const Message = require('../model/masseges.model')
+const Massege = require('../model/masseges.model')
 const User = require('../model/user.models')
 const asyncHandler = require('express-async-handler')
 const Chat = require('../model/chat.model')
@@ -8,6 +8,7 @@ const Chat = require('../model/chat.model')
 // @access		Private
 const sendMessage = asyncHandler(async (req, res) => {
   const { content, chatId } = req.body
+  console.log(req.user, 'user')
   // check for error
   if (!content || !chatId) {
     return res.status(400).json({
@@ -23,7 +24,7 @@ const sendMessage = asyncHandler(async (req, res) => {
   }
   // query DB
   try {
-    var message = await Message.create(newMessage)
+    var message = await Massege.create(newMessage)
     message = await message.populate('sender', 'name image')
     message = await message.populate('chatId')
     message = await User.populate(message, {

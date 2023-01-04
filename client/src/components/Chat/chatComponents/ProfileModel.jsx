@@ -6,6 +6,7 @@ import {
   ModalHeader,
   ModalFooter,
   ModalBody,
+  Button,
   ModalCloseButton,
   Divider,
   Image,
@@ -40,7 +41,9 @@ const ProfileModel = ({ children }) => {
             justifyContent="center"
             textTransform="capitalize"
           >
-            {user.user.username}
+            {user.hasOwnProperty('displayName')
+              ? user.displayName
+              : user.username}
           </ModalHeader>
           <Divider />
           <ModalCloseButton />
@@ -52,13 +55,17 @@ const ProfileModel = ({ children }) => {
             bg="whiteAlpha.500"
             p="20px 0"
           >
-            <Image boxSize="150px" src="#" alt={user.username} />
+            <Image
+              boxSize="150px"
+              src={user.image}
+              // alt={!user.user.username ? user.displayName : ''}
+            />
             <Text mt="2rem" fontSize={{ base: '1rem', md: '1.25rem' }}>
-              Email: {user.email}
+              Email: {user.hasOwnProperty('email') && user.email}
             </Text>
           </ModalBody>
           <ModalFooter>
-            <button onClick={onClose}>Close</button>
+            <Button onClick={onClose}>Close</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

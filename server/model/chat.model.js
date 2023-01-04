@@ -23,6 +23,8 @@ const chatSchema = new mongoose.Schema(
       ref: 'Message',
     },
   },
+  { strictPopulate: false },
+
   {
     timestamps: true,
   }

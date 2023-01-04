@@ -14,6 +14,7 @@ import {
   MenuDivider,
   Drawer,
   DrawerOverlay,
+  Button,
   DrawerContent,
   DrawerHeader,
   DrawerBody,
@@ -59,11 +60,11 @@ const SideDrawer = () => {
         },
       }
       const { data } = await axios.get(
-        `http://localhost:8000/api/allUsers?search=${search}`,
+        `http://localhost:8000/api/users`,
         config
       )
       console.log(data)
-      setSearchResult(data.users)
+      setSearchResult(data)
       setLoading(false)
     } catch (err) {
       toast.error(err)
@@ -224,9 +225,9 @@ const SideDrawer = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <button onClick={handleSearch} fontSize="1.5rem">
+              <Button onClick={handleSearch} fontSize="1.5rem">
                 <IoSearch />
-              </button>
+              </Button>
             </Box>
             {loading ? (
               <Loader />

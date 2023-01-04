@@ -46,19 +46,12 @@ const UpdateGroupChatModal = ({
       return
     }
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
       const { data } = await axios.put(
         `http://localhost:8000/api/chats/groupremove`,
         {
           userId: userToBeRemoved._id,
           chatId: selectedChat._id,
-        },
-        config
+        }
       )
 
       userToBeRemoved._id === user._d
@@ -78,16 +71,12 @@ const UpdateGroupChatModal = ({
     }
     setRenameLoading(true)
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          // Authorization: `Bearer ${user.token}`,
-        },
-      }
       const { data } = await axios.put(
-        '/api/chats/grouprename',
-        { chatName: groupChatName, chatId: selectedChat._id },
-        config
+        'http://localhost:8000/api/chats/grouprename',
+        {
+          chatName: groupChatName,
+          chatId: selectedChat._id,
+        }
       )
       toast.info(`Group name successfully changed to ${data.chatName}`)
       setSelectedChat(data)
@@ -108,14 +97,8 @@ const UpdateGroupChatModal = ({
     }
     setLoading(true)
     try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
       const { data } = await axios.get(
-        `http://localhost:8000/api/users?search=${search}`,
-        config
+        `http://localhost:8000/api/users?search=${search}`
       )
       setSearchResult(data.users)
       setLoading(false)
@@ -138,19 +121,12 @@ const UpdateGroupChatModal = ({
       return
     }
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
       const { data } = await axios.put(
         `http://localhost:8000/api/chats/groupadd`,
         {
           userId: userToAdd._id,
           chatId: selectedChat._id,
-        },
-        config
+        }
       )
       setSelectedChat(data)
       setFetchAgain(!fetchAgain)
@@ -162,20 +138,10 @@ const UpdateGroupChatModal = ({
   }
   const handleRemove = async (userToBeRemoved) => {
     try {
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${user.token}`,
-        },
-      }
-      await axios.put(
-        `http://localhost:8000/api/chats/groupremove`,
-        {
-          userId: userToBeRemoved.user._id,
-          chatId: selectedChat._id,
-        },
-        config
-      )
+      await axios.put(`http://localhost:8000/api/chats/groupremove`, {
+        userId: userToBeRemoved.user._id,
+        chatId: selectedChat._id,
+      })
       setSelectedChat()
       setFetchAgain(!fetchAgain)
       fetchAllMessages()
