@@ -1,14 +1,24 @@
 const express = require('express')
-const cors = require('cors')
 const app = express()
-const cookieSession = require('cookie-session')
+app.use(express.json())
+const colors = require('colors')
+const cors = require('cors')
+require('./config/mongoose.config')
 const oauth2 = require('./routes/oauth2')
 const passport = require('passport')
 require('./passport')
-require('./config/mongoose.config')
+
 require('dotenv').config()
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+const { errorHandler, routeNotFound } = require('./middleware/errorMiddleware')
+const userRoutes = require('./routes/userRoutes')
+const chatRoutes = require('./routes/chatRoutes')
+const messageRoutes = require('./routes/messageRoutes')
+const notificationRoutes = require('./routes/notificationRoutes')
+const groupRouter = require('./routes/group.routs')
+const postRouter = require('./routes/posts.routs')
+
+const path = require('path')
+const cookieSession = require('cookie-session')
 app.use(
   cookieSession({
     name: 'session',
@@ -17,47 +27,58 @@ app.use(
     // maxAge: 5,
   })
 )
-const postRouter = require('./routes/posts.routs')
-
-const appRouter = require('./routes/app.routs')
-const chatRouter = require('./routes/chatRoutes')
-const messageRouter = require('./routes/messageRoutes')
-const notificationRouter = require('./routes/notificationRoutes')
-const groupRouter = require('./routes/group.routs')
-const { errorHandler, routeNotFound } = require('./middleware/errorMiddleware')
 app.use(
   cors({
     origin: 'http://localhost:3000',
     methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
   })
 )
 app.use(passport.initialize())
 app.use(passport.session())
-app.use('/api/chats', chatRouter)
-app.use('/api', appRouter)
-app.use('/api/message', messageRouter)
-app.use('/api/notification', notificationRouter)
-app.use('/api/group', groupRouter)
+
+// Main routes
+app.use('/api/users', userRoutes)
+app.use('/api/chats', chatRoutes)
+app.use('/api/message', messageRoutes)
+app.use('/api/notification', notificationRoutes)
 app.use('/auth', oauth2)
 app.use('/api/post', postRouter)
-// const cookieparser = require("cookie-parser");
-// app.use(cookieparser());
+app.use('/api/group', groupRouter)
 
-const PORT = process.env.PORT || 8000
+// -----------------------------------------------------------------------------
 
-const server = app.listen(PORT, () => {
-  console.log(`Listening at Port ${PORT}`)
-})
+const __dirname$ = path.resolve()
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname$, '/client/build')))
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname$, 'client', 'build', 'index.html'))
+  })
+} else {
+  // First route
+  app.get('/', (req, res) => {
+    res.status(200).json({
+      message: 'Hello  Chat App server',
+    })
+  })
+}
 
+// -----------------------------------------------------------------------------
+
+// Error handling routes
 app.use(routeNotFound)
 app.use(errorHandler)
-// Chat App
+
+const server = app.listen(process.env.PORT || 8000, () => {
+  console.log(
+    colors.brightMagenta(`\nServer is UP on PORT ${process.env.PORT}`)
+  )
+  console.log(`Visit  ` + colors.underline.blue(`localhost:${8000}`))
+})
+
 const io = require('socket.io')(server, {
+  pingTimeout: 60000,
   cors: {
     origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
   },
 })
 

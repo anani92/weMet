@@ -1,198 +1,205 @@
-import React from 'react'
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  InputGroup,
+  InputRightElement,
+  VStack,
+  Button,
+} from '@chakra-ui/react'
+import React, { useState } from 'react'
+import { validateEmail } from '../Util/valid'
+import { toast } from 'react-toastify'
 import axios from 'axios'
-import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
-import { Avatar, Box, Button, createTheme, CssBaseline, Grid, TextField, ThemeProvider, Typography } from '@mui/material'
-import { Container } from '@mui/material'
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import GoogleIcon from '@mui/icons-material/Google';
-import GitHubIcon from '@mui/icons-material/GitHub';
+import { useNavigate } from 'react-router-dom'
 import { useAuthContext } from '../hooks/useAuthContext'
-// import social2 from '../utils/social2.jpg'
+import GoogleButton from './GoogleButton'
+import { IconButton } from '@chakra-ui/react'
+import GithubButton from './GithubButton'
+import { Box } from '@chakra-ui/react'
 
 const Login = () => {
-    const [backendErrors, setBackendErrors] = useState("")
-    const navigate = useNavigate()
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-    const { dispatch } = useAuthContext()
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        axios.post(`http://localhost:8000/api/login`, { email, password })
-            .then((res) => {
-                localStorage.setItem('user', JSON.stringify(res.data));
-                dispatch({ type: 'LOGIN', payload: res.data })
-                navigate(`/`)
-            })
-            .catch(err => {
-                setBackendErrors(err.response.data.error)
-            })
-    }
-    const google = () => {
-        window.open("http://localhost:8000/auth/google", "_self")
-        const getUser = () => {
-            fetch("http://localhost:8000/auth/login/success", {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Credentials": true,
-                },
-            })
-                .then((res) => {
-                    if (res.status === 200) return res.json();
-                    // throw new Error("Authentication has been failed");
-                })
-                .then((resObject) => {
-                    dispatch({ type: "LOGIN", payload: resObject.user });
-                    localStorage.setItem("user", JSON.stringify(resObject.user));
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        getUser();
+  const { dispatch } = useAuthContext()
 
-    }
-    const github = () => {
-        window.open("http://localhost:8000/auth/github", "_self")
-        const getUser = () => {
-            fetch("http://localhost:8000/auth/login/success", {
-                method: "GET",
-                credentials: "include",
-                headers: {
-                    Accept: "application/json",
-                    "Content-Type": "application/json",
-                    "Access-Control-Allow-Credentials": true,
-                },
-            })
-                .then((res) => {
-                    if (res.status === 200) return res.json();
-                    // throw new Error("Authentication has been failed");
-                })
-                .then((resObject) => {
-                    dispatch({ type: "LOGIN", payload: resObject.user });
-                    localStorage.setItem("user", JSON.stringify(resObject.user));
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        getUser();
-    }
-    const theme = createTheme();
-    return (
-        <Box
-        // sx={{
-        //     backgroundImage: `url(${social2})`,
-        //     backgroundSize: 'cover',
-        //     width: `calc(90vw)`,
-        //     height: "90vh",
-        //     backgroundPosition: '25% 75%',
-        //     opacity: "",
-        //     margin: '1rem auto',
-        //     padding: '1rem',
-        // }}
-        >
+  const navigate = useNavigate()
+  const [show, setShow] = useState(false)
+  const handleClick = () => setShow(!show)
+  const initialState = {
+    email: '',
+    password: '',
+  }
+  const [userData, setUserData] = useState(initialState)
+  const [loading, setLoading] = useState(false)
 
-            <ThemeProvider theme={theme}>
-                <Container component="main" maxWidth="xs">
-                    <CssBaseline />
-                    <Box
-                        sx={{
-                            marginTop: 3,
-                            display: "flex",
-                            flexDirection: "column",
-                            alignItems: "center",
-                        }}
-                    >
-                        <Avatar sx={{ m: 1, bgcolor: 'info.main' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <Typography component="h1" variant="h5">
-                            Log In
-                        </Typography>
-                        <Box
-                            component='form'
-                            onSubmit={handleSubmit}
-                            noValidate
-                            sx={{ mt: 1 }}
-                        >
-                            <Typography component="h1" variant="h5">
-                                {/* {backendErrors.map((err, i) => <p style={{ color: 'red', textAlign: 'center' }} key={i}>{err ? err : null}</p>)} */}
-                                <p style={{ color: 'red', textAlign: 'center' }}>{backendErrors}</p>
-                            </Typography>
-                            <TextField
-                                margin="normal"
-                                // required
-                                fullWidth
-                                onChange={(e) => setEmail(e.target.value)}
-                                type='email'
-                                label="Email"
-                                placeholder='Enter email...'
-                                // autoComplete="Email"
-                                autoFocus
-                            />
-                            <TextField
-                                margin="normal"
-                                // required
-                                onChange={(e) => setPassword(e.target.value)}
-                                type='password'
-                                fullWidth
-                                label="Password"
-                                placeholder='Enter password...'
-                                // autoComplete="password"
-                                autoFocus
-                            />
-                            <Button
-                                type="submit"
-                                fullWidth
-                                variant="contained"
-                                color="info"
-                                sx={{ mt: 3, mb: 1 }}
-                            >
-                                Log In
-                            </Button>
-                            <Button
-                                fullWidth
-                                onClick={google}
-                                variant="outlined"
-                                color="info"
-                                startIcon={<GoogleIcon />}
-                                sx={{ mt: 1, mb: 1 }}
-                            >
-                                Continue with Google
-                            </Button>
-                            <Button
-                                fullWidth
-                                onClick={github}
-                                variant="outlined"
-                                color="info"
-                                startIcon={<GitHubIcon />}
-                                sx={{ mt: 1, mb: 3 }}
-                            >
-                                Continue with GitHub
-                            </Button>
-                            <Grid container>
-                                <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Forgot password?
-                                    </Link>
-                                </Grid>
-                                <Grid item>
-                                    <Link to={`/register`} variant="body2">
-                                        Don't have an account? Sign Up
-                                    </Link>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Box>
-                </Container>
-            </ThemeProvider >
-        </Box>
+  const { email, password } = userData
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setUserData({ ...userData, [name]: value })
+  }
+  const handleSubmit = async () => {
+    setLoading(true)
 
-    )
+    if (!email || !password) {
+      toast.warn('Please enter all the required fields')
+    }
+    if (!validateEmail(email)) {
+      toast.warn('Invalid Email')
+    }
+    try {
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        },
+      }
+      const { data } = await axios.post(
+        'http://localhost:8000/api/users/login',
+        { email, password },
+        config
+      )
+      toast.success('User Logged In successfully')
+      localStorage.setItem('user', JSON.stringify(data))
+      setLoading(false)
+      navigate('/dash')
+    } catch (err) {
+      toast.error('Login Failed: Either the email or password is incorrect')
+      setLoading(false)
+      return
+    }
+  }
+  const google = () => {
+    window.open('http://localhost:8000/auth/google', '_self')
+    const getUser = () => {
+      fetch('http://localhost:8000/auth/login/success', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': true,
+        },
+      })
+        .then((res) => {
+          if (res.status === 200) return res.json()
+          // throw new Error("Authentication has been failed");
+        })
+        .then((resObject) => {
+          dispatch({ type: 'LOGIN', payload: resObject.user })
+          localStorage.setItem('user', JSON.stringify(resObject.user))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    getUser()
+  }
+  const github = () => {
+    window.open('http://localhost:8000/auth/github', '_self')
+    const getUser = () => {
+      fetch('http://localhost:8000/auth/login/success', {
+        method: 'GET',
+        credentials: 'include',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Credentials': true,
+        },
+      })
+        .then((res) => {
+          if (res.status === 200) return res.json()
+          // throw new Error("Authentication has been failed");
+        })
+        .then((resObject) => {
+          dispatch({ type: 'LOGIN', payload: resObject.user })
+          localStorage.setItem('user', JSON.stringify(resObject.user))
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+    }
+    getUser()
+  }
+  return (
+    <VStack spacing="30px">
+      <FormControl id="loginEmail" isRequired>
+        <FormLabel mb="0px">Email</FormLabel>
+        <Input
+          onChange={handleChange}
+          name="email"
+          value={email}
+          size="md"
+          placeholder="example@something.com"
+        />
+      </FormControl>
+      <FormControl id="loginPassword" isRequired>
+        <FormLabel mb="0px">Password</FormLabel>
+        <InputGroup size="md">
+          <Input
+            pr="4.5rem"
+            type={show ? 'text' : 'password'}
+            placeholder="Enter password"
+            onChange={handleChange}
+            name="password"
+            value={password}
+          />
+          <InputRightElement width="4.5rem">
+            <Button
+              h="1.75rem"
+              size="xs"
+              onClick={handleClick}
+              isDisabled={email === 'guest@deLink.com'}
+            >
+              {show ? 'Hide' : 'Show'}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
+      <Button
+        bg={'#1d1931'}
+        colorScheme={'#1d1931'}
+        color="#fff"
+        width="100%"
+        style={{ marginTop: '40px' }}
+        onClick={handleSubmit}
+      >
+        Login
+      </Button>
+      <Button
+        variant="outline"
+        bg={'#fff'}
+        colorScheme={'white'}
+        color="#000"
+        width="100%"
+        style={{ marginTop: '10px' }}
+        onClick={() => {
+          setUserData({
+            email: 'guest@wemet.com',
+            password: 'password123',
+          })
+        }}
+        isLoading={loading}
+      >
+        Guest login
+      </Button>
+      {/* <IconButton
+        onClick={google}
+        startIcon={}
+      ></IconButton> */}
+
+      <Box>
+        <i onClick={google}>
+          {' '}
+          <GoogleButton sx={{ mt: 1, mb: 1 }} />
+        </i>
+        <i onClick={github}>
+          <GithubButton sx={{ mt: 1, mb: 1 }} />
+        </i>
+      </Box>
+
+      {/* <Button fullWidth variant="outlined" color="info" sx={{ mt: 1, mb: 3 }}>
+          Continue with GitHub
+        </Button> */}
+    </VStack>
+  )
 }
 
 export default Login

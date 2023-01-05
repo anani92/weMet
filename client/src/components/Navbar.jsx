@@ -1,50 +1,59 @@
 import { useLogout } from '../hooks/useLogout'
 import { useAuthContext } from '../hooks/useAuthContext'
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow'
-import HandshakeIcon from '@mui/icons-material/Handshake';
-
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Menu from '@mui/material/Menu'
+import MenuIcon from '@mui/icons-material/Menu'
+import Container from '@mui/material/Container'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import Tooltip from '@mui/material/Tooltip'
+import MenuItem from '@mui/material/MenuItem'
+import HandshakeIcon from '@mui/icons-material/Handshake'
+import { useLocation } from 'react-router-dom'
 const Navbar = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const { logout } = useLogout()
   const { user } = useAuthContext()
   const handleLogout = () => {
     logout()
   }
+  const { pathname } = useLocation()
 
-  const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElUser, setAnchorElUser] = useState(null)
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+    setAnchorElNav(event.currentTarget)
+  }
   const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
-  };
+    setAnchorElUser(event.currentTarget)
+  }
 
   const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+    setAnchorElNav(null)
+  }
 
   const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
+    setAnchorElUser(null)
+  }
+  var photo = ''
+  if (user)
+    if (user.hasOwnProperty('provider')) {
+      if (user.provider === 'github') {
+        photo = user.photos[0].value
+      } else {
+        console.log(user._json.picture)
+        photo = user._json.picture
+      }
+    }
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#063970' }}>
+    <AppBar position="static" sx={{ backgroundColor: '#1d1931' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <HandshakeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -62,7 +71,13 @@ const Navbar = () => {
               cursor: 'pointer',
             }}
           >
-            we<span style={{ color: '#CFA76E', fontFamily: 'Nunito' }} onClick={() => navigate('/')}>Met</span>
+            we
+            <span
+              style={{ color: '#CFA76E', fontFamily: 'Nunito' }}
+              onClick={() => navigate('/dash')}
+            >
+              Met
+            </span>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -95,7 +110,20 @@ const Navbar = () => {
               }}
             >
               <MenuItem onClick={handleCloseNavMenu}>
-                <Typography textAlign="center" onClick={() => navigate('/groups')}>Group</Typography>
+                <Typography
+                  textAlign="center"
+                  onClick={() => navigate('/groups')}
+                >
+                  Group
+                </Typography>
+              </MenuItem>
+              <MenuItem onClick={handleCloseNavMenu}>
+                <Typography
+                  textAlign="center"
+                  onClick={() => navigate('/chats')}
+                >
+                  Chats
+                </Typography>
               </MenuItem>
             </Menu>
           </Box>
@@ -115,54 +143,73 @@ const Navbar = () => {
               cursor: 'pointer',
             }}
           >
-            we<span style={{ color: '#CFA76E', fontFamily: 'Nunito' }} onClick={() => navigate('/')}>Met</span>
+            we
+            <span
+              style={{ color: '#CFA76E', fontFamily: 'Nunito' }}
+              onClick={() => navigate('/dash')}
+            >
+              Met
+            </span>
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-
             <Button
               onClick={handleCloseNavMenu}
               sx={{ my: 2, color: 'white', display: 'block' }}
             >
-              <span onClick={() => navigate("/groups")}>Groups</span>
+              <span onClick={() => navigate('/groups')}>Groups</span>
+            </Button>
+            <Button
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              <span onClick={() => navigate('/chats')}>Chats</span>
             </Button>
           </Box>
-
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                {/* {user ? : <Avatar alt="MB" src={user._json.picture} />} */}
-                <Avatar alt="MB" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              <MenuItem onClick={handleCloseUserMenu}>
-                {user ?
-                  <Typography textAlign="center" onClick={handleLogout}>Logout</Typography>
-                  :
-                  <Typography textAlign="center" onClick={() => navigate('/login')}>Login</Typography>}
-              </MenuItem>
-            </Menu>
-          </Box>
+          {pathname !== '/chats' && (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  {/* {user ? : <Avatar alt="MB" src={user._json.picture} />} */}
+                  <Avatar alt="MB" src={photo} />
+                </IconButton>
+              </Tooltip>
+              {/* <Typography> {userName}</Typography> */}
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleCloseUserMenu}>
+                  {user ? (
+                    <Typography textAlign="center" onClick={handleLogout}>
+                      Logout
+                    </Typography>
+                  ) : (
+                    <Typography
+                      textAlign="center"
+                      onClick={() => navigate('/')}
+                    >
+                      Login
+                    </Typography>
+                  )}
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
-      {/* {formatDistanceToNow(new Date(user.user.createdAt), { addSuffix: true })} */}
     </AppBar>
-
   )
 }
 

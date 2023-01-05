@@ -1,57 +1,28 @@
-import { Box } from '@mui/material'
-import { Routes, Route, BrowserRouter } from 'react-router-dom'
-import { Login, Register, Navbar, Groups, Dashboard } from './components'
-// import { useEffect } from "react";
-// import axios from "axios";
-import { useAuthContext } from './hooks/useAuthContext'
-import GroupPost from './components/GroupPost'
-import PostDetails from './components/PostDetails'
-import ChatPage from './components/Chat/pages/ChatPage'
+import { Routes, Route } from 'react-router-dom'
+import './App.css'
+import HomePage from './pages/HomePage'
+import ChatPage from './pages/ChatPage'
+import FourOFour from './pages/FourOFour'
+import Dashboard from './pages/Dashboard'
+// import { ChakraProvider } from '@chakra-ui/react'
+import Groups from './pages/Groups'
+import Navbar from './components/Navbar'
+import GroupPosts from './pages/GroupPost'
+import Comments from './pages/Comments'
 function App() {
-  const { user, dispatch } = useAuthContext()
-  // useEffect(() => {
-  //   const getUser = () => {
-  //     fetch("http://localhost:8000/auth/login/success", {
-  //       method: "GET",
-  //       credentials: "include",
-  //       headers: {
-  //         Accept: "application/json",
-  //         "Content-Type": "application/json",
-  //         "Access-Control-Allow-Credentials": true,
-  //       },
-  //     })
-  //       .then((res) => {
-  //         if (res.status === 200) return res.json();
-  //         // throw new Error("Authentication has been failed");
-  //       })
-  //       .then((resObject) => {
-  //         // dispatch({ type: "LOGIN", payload: resObject.user });
-  //         localStorage.setItem("user", JSON.stringify(resObject.user));
-  //       })
-  //       .catch((err) => {
-  //         console.log(err);
-  //       });
-  //   };
-  //   getUser();
-  // }, []);
-
   return (
-    <Box>
+    <div className="App">
       <Navbar />
       <Routes>
-        <Route path={`/`} element={<Dashboard />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/chats" element={<ChatPage />} />
+        <Route path="/dash" element={<Dashboard />} />
+        <Route path={`/group/:id/posts`} element={<GroupPosts />} />
+        <Route path={`/post/:id`} element={<Comments />} />
+        <Route path="*" element={<FourOFour />} />
         <Route path={`/groups`} element={<Groups />} />
-        <Route path={`/chats`} element={<ChatPage />} />
-
-        <Route path={`/group/posts`} element={<GroupPost />} />
-        <Route path={`/post`} element={user ? <PostDetails /> : <Login />} />
-        <Route
-          path={`/register`}
-          element={!user ? <Register /> : <Dashboard />}
-        />
-        <Route path={`/login`} element={!user ? <Login /> : <Dashboard />} />
       </Routes>
-    </Box>
+    </div>
   )
 }
 

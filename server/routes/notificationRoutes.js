@@ -1,13 +1,12 @@
+const router = require("express").Router();
 const {
   addNewNotification,
   deleteNotification,
   getNotification,
-} = require('../controllers/notificatin.controller')
-const express = require('express')
-const app = express()
+} = require("../controllers/notificationController");
+const auth = require("../middleware/authMiddleware");
 
-app.post('/', addNewNotification)
-app.get('/', getNotification)
-app.delete('/:notificationId', deleteNotification)
+router.route("/").post(auth, addNewNotification).get(auth, getNotification);
+router.route("/:notificationId").delete(auth, deleteNotification);
 
-module.exports = app
+module.exports = router;

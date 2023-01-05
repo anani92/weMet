@@ -1,6 +1,6 @@
-import React from "react";
-import Post from "./Post";
-import { Box } from "@mui/material";
+import React from 'react'
+import Post from './Post'
+import { Box } from '@mui/material'
 import {
   Grid,
   TextField,
@@ -8,7 +8,7 @@ import {
   Card,
   CardContent,
   Typography,
-} from "@material-ui/core";
+} from '@material-ui/core'
 
 const GroupPost = () => {
   return (
@@ -18,9 +18,9 @@ const GroupPost = () => {
         <Card
           style={{
             maxWidth: 450,
-            padding: "20px 5px",
-            marginLeft: "75%",
-            marginTop: "5%",
+            padding: '20px 5px',
+            marginLeft: '75%',
+            marginTop: '5%',
           }}
         >
           <CardContent>
@@ -54,12 +54,12 @@ const GroupPost = () => {
           </CardContent>
         </Card>
       </Grid>
-      <Box flex={4} p={{ xs: 0 }} sx={{ marginLeft: "27%", width: "40%" }}>
+      <Box flex={4} p={{ xs: 0 }} sx={{ marginLeft: '27%', width: '40%' }}>
         <Post />
         <Post />
       </Box>
     </div>
-  );
-};
+  )
+}
 
-export default GroupPost;
+export default GroupPost

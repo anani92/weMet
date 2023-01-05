@@ -1,16 +1,17 @@
 import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
 import ReactDOM from 'react-dom/client'
+import './index.css'
 import App from './App'
-import ChatProvider from './components/Chat/context/ChatProvider'
+import ChatProvider from './context/ChatProvider'
 import { AuthContextProvider } from './context/AuthContext'
-import { BrowserRouter } from 'react-router-dom'
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
-  <BrowserRouter>
-    <AuthContextProvider>
+  <AuthContextProvider>
+    <Router>
       <ChatProvider>
         <App />
       </ChatProvider>
-    </AuthContextProvider>
-  </BrowserRouter>
+    </Router>
+  </AuthContextProvider>
 )
